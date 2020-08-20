@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="page-header">
+   <div id="navbar" class="navbar-collapse collapse">
+       <form class="navbar-form" method="post" action="booklist/">
+              <!-- avoid CSRF verification failed error. -->
+              {% csrf_token %}
+           <div class="form-group">
+              <input name="book_name" type="text" placeholder="book name" class="form-control" value="{{ search_user_name }}">
+           </div>
+           <button type="submit" class="btn btn-success">Search</button>
+       </form>
+   </div>
+</div>
+<br>
+<br>
+
+    <div class="table">
+        <table class="table">
+  <caption>List of Books</caption>
+  <thead>
+    <tr>
+
+      <th scope="col">Book</th>
+      <th scope="col">Author</th>
+      <th scope="col">Publication</th>
+    </tr>
+  </thead>
+  <tbody>
+   {% for data in all_data %}
+
+    <tr>
+      <td>{{data.title}}</td>
+      <td>{{data.author.name}}</td>
+      <td>{{data.publication.name}}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+    </div>
+
+<div class="pagination">
+    <!-- previous page link -->
+    {% if BookListView.has_previous %}
+        <a href="{{ base_url }}page={{ BookListView.previous_page_number }}">Prev</a></li>
+    {% else %}
+        <span class="disabled">Prev</span>
+    {% endif %}
+    <!-- page number link-->
+    {% for i in paginator.page_range %}
+         {% if BookListView.number == i %}
+              <span class="active">{{ i }} <span class="sr-only">(current)</span></span>
+         {% else %}
+              <a href="{{ base_url }}page={{ user_list.previous_page_number }}">{{ i }}</a></li>
+         {% endif %}
+    {% endfor %}
+    <!-- next page link -->
+    {% if BookListView.has_next %}
+
+         <a href="{{ base_url }}page={{ user_list.previous_page_number }}">Next</a>
+    {% else %}
+
+         <span class="disabled">Next</span>
+
+    {% endif %}
+</div>
+
+
+
+
+{% endblock %}
